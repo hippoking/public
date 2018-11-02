@@ -121,3 +121,21 @@ php_value date.timezone America/New_York
 ## Installing zabbix frontend
 ## In your browser, open Zabbix URL: http://<server_ip_or_name>/zabbix
 ## config process is easy, the default user name is Admin, password zabbix.
+
+
+
+## zabbix agent installation:
+## zabbix repo:
+
+RHEL 7:
+rpm -ivh https://repo.zabbix.com/zabbix/4.0/rhel/7/x86_64/zabbix-release-4.0-1.el7.noarch.rpm
+
+RHEL 6:
+rpm -ivh https://repo.zabbix.com/zabbix/4.0/rhel/6/x86_64/zabbix-release-4.0-1.el6.noarch.rpm
+
+RHEL 5:
+rpm -ivh https://repo.zabbix.com/zabbix/4.0/rhel/5/x86_64/zabbix-release-4.0-1.noarch.rpm
+
+## agent installation:
+yum install zabbix-agent
+
