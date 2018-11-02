@@ -1,0 +1,123 @@
+## basic installation
+yum install wget git sed -y 
+
+## install extra repos
+yum install epel-release yum-utils
+
+## set selinux to disable, do it manually or use following code:
+sed -i 's/^SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config && cat /etc/selinux/config
+
+## php7 is actually not supported in standard CentOS package, zabbix repo is not supported php7 yet, below actions are for reference only
+#yum install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+## config php 7 repo
+#yum-config-manager --enable remi-php72
+rm -rf /var/cache/yum
+yum update
+
+## install php 5.4.16(7.2 currently is not officially supported by zabbix repo)
+sudo yum -y install php php-pear php-cgi php-common php-mbstring php-snmp php-gd php-xml php-mysql php-gettext php-bcmath
+# set php timezone to America/New_York
+sudo sed -i "s/^;date.timezone =$/date.timezone = \"America\/New_York\"/" /etc/php.ini
+
+## install apache 2.4
+yum install httpd vim -y
+systemctl start httpd
+systemctl enable httpd
+
+## After installing Apache, configure basic security by allowing Prod ServerTokens only on./etc/httpd/conf/httpd.conf Add the following line at the end of the file:
+
+echo 'ServerSignature Off' >> /etc/httpd/conf/httpd.conf
+echo 'ServerTokens Prod' >> /etc/httpd/conf/httpd.conf
+
+Set ServerName:
+
+# grep ServerName /etc/httpd/conf/httpd.conf
+ServerName zx.example.com
+
+#Set Server Admin to receive an email in case of issues.
+# grep ServerAdmin /etc/httpd/conf/httpd.conf
+ServerAdmin admin@example.com
+
+#Restart apache web service after making the changes
+sudo systemctl restart httpd
+If  you have a firewalld firewall installed and enabled, allow access to port 443 and 80
+
+sudo firewall-cmd --add-service={http,https} --permanent
+sudo firewall-cmd --reload
+
+## install mariadb for centos 7
+cat >/etc/yum.repos.d/MariaDB.repo<<EOF 
+[mariadb]
+name = MariaDB
+baseurl = http://yum.mariadb.org/10.3/centos7-amd64
+gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+gpgcheck=1
+EOF
+
+## clean yum cache index:
+sudo yum makecache fast
+
+# install mariadb 10.3
+sudo yum -y install MariaDB-server MariaDB-client
+
+# start MariaDB service:
+sudo systemctl start mariadb
+sudo systemctl enable mariadb
+
+# secure MariaDB by runing
+mysql_secure_installation
+
+## start installation process for zabbix
+# install centos 7 zabbix repo
+rpm -ivh https://repo.zabbix.com/zabbix/4.0/rhel/7/x86_64/zabbix-release-4.0-1.el7.noarch.rpm
+# config frontend repo
+yum-config-manager --enable rhel-7-server-optional-rpms
+
+# install server/frontend/agent
+
+yum install zabbix-server-mysql zabbix-web-mysql zabbix-agent
+
+# create database using phpmyadmin or use following code:
+shell> mysql -uroot -p<password>
+mysql> create database zabbix character set utf8 collate utf8_bin;
+mysql> grant all privileges on zabbix.* to zabbix@localhost identified by '<password>';
+mysql> quit;
+
+
+# importing data
+#for zx server
+zcat /usr/share/doc/zabbix-server-mysql*/create.sql.gz | mysql -u root -p zxserver
+#for zx proxy ( in your proxy instance)
+zcat /usr/share/doc/zabbix-proxy-mysql*/schema.sql.gz | mysql -u root -p zxproxy
+
+# configure database for Zabbix server and proxy
+
+# vi /etc/zabbix/zabbix_server.conf or zabbix_proxy.conf
+DBHost=localhost
+DBName=zabbix
+DBUser=zabbix
+DBPassword=<password>
+
+# start zabbix server process
+systemctl start zabbix-server
+systemctl enable zabbix-server
+systemctl start zabbix-agent
+systemctl enable zabbix-agent
+
+
+# frontend configuration
+# for centos7 and later, zabbix httpd config file is located in /etc/httpd/conf.d/zabbix.conf
+# config file is configured, however it's necessary to uncoment the timezone setting and set correct timezone for zabbix to use
+
+php_value max_execution_time 300
+php_value memory_limit 128M
+php_value post_max_size 16M
+php_value upload_max_filesize 2M
+php_value max_input_time 300
+php_value max_input_vars 10000
+php_value always_populate_raw_post_data -1
+php_value date.timezone America/New_York
+
+## Installing zabbix frontend
+## In your browser, open Zabbix URL: http://<server_ip_or_name>/zabbix
+## config process is easy, the default user name is Admin, password zabbix.
