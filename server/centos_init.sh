@@ -2,6 +2,9 @@
 
 # This script only works for CentOS
 
+# CSF config location
+CSFL="/etc/csf/csf.conf"
+
 # Check if user is root
 if [ $(id -u) != "0" ]; then
     echo "Error: You must be root to run this initial optimization script"
