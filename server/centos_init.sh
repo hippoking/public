@@ -31,21 +31,20 @@ Optimize_Resolv()
 {
     if [ -s /etc/resolv.conf ]
 	then
-	  echo '8.8.8.8' > /etc/resolv.conf
-	  echo '8.8.4.4' >> /etc/resolv.conf
-	  echo '4.2.2.1' >> /etc/resolv.conf
-	  echo '4.2.2.2' >> /etc/resolv.conf
-	  echo '4.2.2.3' >> /etc/resolv.conf
-	  echo '4.2.2.4' >> /etc/resolv.conf
-	  echo '4.2.2.5' >> /etc/resolv.conf
-	  echo '4.2.2.6' >> /etc/resolv.conf
+	  echo 'nameserver 8.8.8.8' > /etc/resolv.conf
+	  echo 'nameserver 8.8.4.4' >> /etc/resolv.conf
+	  echo 'nameserver 4.2.2.1' >> /etc/resolv.conf
+	  echo 'nameserver 4.2.2.2' >> /etc/resolv.conf
+	  echo 'nameserver 4.2.2.3' >> /etc/resolv.conf
+	  echo 'nameserver 4.2.2.4' >> /etc/resolv.conf
+	  echo 'nameserver 4.2.2.5' >> /etc/resolv.conf
+	  echo 'nameserver 4.2.2.6' >> /etc/resolv.conf
 	fi
 }
 
 # set EST5 timezone
 Set_Timezone()
 {
-    echo "Setting timezone..."
     rm -rf /etc/localtime
     cp /usr/share/zoneinfo/America/New_York /etc/localtime
 }
