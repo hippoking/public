@@ -63,7 +63,8 @@ Set_SSHPort()
     read -p "Please enter new SSH ports:" sshport
 	sed -i "s/^Port 22/Port $sshport/g" /etc/ssh/sshd_config
 	sed -i "s/^#Port 22/Port $sshport/g" /etc/ssh/sshd_config
-	systemctl restart sshd
+# you can't restart your sshd service here because selinux will prevent you from doing this
+#	systemctl restart sshd
 }
 
 Pre_CSF()
