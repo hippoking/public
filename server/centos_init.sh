@@ -13,6 +13,7 @@ Update_OS()
     yum clean all
 	yum makecache fast
 	yum update -y
+	yum install wget git unzip -y
 }
 
 
@@ -30,8 +31,7 @@ Optimize_Resolv()
 {
     if [ -s /etc/resolv.conf ]
 	then
-	  echo '' > /etc/resolv.conf
-	  echo '8.8.8.8' >> /etc/resolv.conf
+	  echo '8.8.8.8' > /etc/resolv.conf
 	  echo '8.8.4.4' >> /etc/resolv.conf
 	  echo '4.2.2.1' >> /etc/resolv.conf
 	  echo '4.2.2.2' >> /etc/resolv.conf
@@ -46,7 +46,8 @@ Optimize_Resolv()
 Set_Timezone()
 {
     echo "Setting timezone..."
-    cp /usr/share/zoneinfo/America/New_York /etc/localtime -y
+    rm -rf /etc/localtime
+    cp /usr/share/zoneinfo/America/New_York /etc/localtime
 }
 
 Root_Aliases()
@@ -68,7 +69,7 @@ Set_SSHPort()
 Pre_CSF()
 {
     echo "This is a centos server,install necessary packages for CSF:"
-    yum install perl-libwww-perl.noarch perl-LWP-Protocol-https.noarc bind-utils perl-Crypt-SSLeay perl-Net-SSLeay perl-LWP-Protocol-https unzip bind-utils
+    yum install perl-libwww-perl.noarch perl-LWP-Protocol-https.noarc bind-utils perl-Crypt-SSLeay perl-Net-SSLeay perl-LWP-Protocol-https unzip bind-utils -y
 }
 
 Install_CSF()
