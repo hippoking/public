@@ -24,7 +24,8 @@ yum install httpd vim -y
 systemctl start httpd
 systemctl enable httpd
 
-## After installing Apache, configure basic security by allowing Prod ServerTokens only on./etc/httpd/conf/httpd.conf Add the following line at the end of the file:
+## After installing Apache, configure basic security by allowing Prod ServerTokens only on
+# /etc/httpd/conf/httpd.conf Add the following line at the end of the file:
 
 echo 'ServerSignature Off' >> /etc/httpd/conf/httpd.conf
 echo 'ServerTokens Prod' >> /etc/httpd/conf/httpd.conf
@@ -46,6 +47,7 @@ sudo firewall-cmd --add-service={http,https} --permanent
 sudo firewall-cmd --reload
 
 ## install mariadb for centos 7
+## https://downloads.mariadb.org/mariadb/repositories
 cat >/etc/yum.repos.d/MariaDB.repo<<EOF 
 [mariadb]
 name = MariaDB
