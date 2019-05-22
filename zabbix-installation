@@ -71,13 +71,16 @@ mysql_secure_installation
 
 ## start installation process for zabbix
 # install centos 7 zabbix repo
-rpm -ivh https://repo.zabbix.com/zabbix/4.0/rhel/7/x86_64/zabbix-release-4.0-1.el7.noarch.rpm
+rpm -Uvh https://repo.zabbix.com/zabbix/4.2/rhel/7/x86_64/zabbix-release-4.2-1.el7.noarch.rpm
 # config frontend repo
 yum-config-manager --enable rhel-7-server-optional-rpms
 
 # install server/frontend/agent
 
-yum install zabbix-server-mysql zabbix-web-mysql zabbix-agent
+yum install zabbix-server-mysql zabbix-web-mysql
+
+## zabbix-agent is required on agent server, not necessary on master server
+yum install zabbix-agent -y
 
 # create database using phpmyadmin or use following code:
 shell> mysql -uroot -p<password>
@@ -88,9 +91,9 @@ mysql> quit;
 
 # importing data
 #for zx server
-zcat /usr/share/doc/zabbix-server-mysql*/create.sql.gz | mysql -u root -p zxserver
+zcat /usr/share/doc/zabbix-server-mysql*/create.sql.gz | mysql -u root -p zabbix
 #for zx proxy ( in your proxy instance)
-zcat /usr/share/doc/zabbix-proxy-mysql*/schema.sql.gz | mysql -u root -p zxproxy
+zcat /usr/share/doc/zabbix-proxy-mysql*/schema.sql.gz | mysql -u root -p zabbix-proxy
 
 # configure database for Zabbix server and proxy
 
