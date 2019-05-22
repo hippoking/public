@@ -86,6 +86,8 @@ yum install zabbix-agent -y
 shell> mysql -uroot -p<password>
 mysql> create database zabbix character set utf8 collate utf8_bin;
 mysql> grant all privileges on zabbix.* to zabbix@localhost identified by '<password>';
+##
+grant all privileges on zabbix.* to zabbix@localhost identified by '4C93NE6eHWe4r6qz';
 mysql> quit;
 
 
