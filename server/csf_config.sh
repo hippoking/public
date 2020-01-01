@@ -31,7 +31,8 @@ Init_CSF()
 	  sed -i 's/^PT_USERTIME = "1800"$/PT_USERTIME = "0"/g' $CSFL
 	  sed -i 's/^PT_USERKILL_ALERT = "1"$/PT_USERKILL_ALERT = "0"/g' $CSFL
 	  sed -i 's/^PT_LOAD = "30"$/PT_LOAD = "0"/g' $CSFL
-	  sed -i 's/^PS_EMAIL_ALERT = "1"$/PS_EMAIL_ALERT = "0"/g' $CSFL	  	  	  
+	  sed -i 's/^PS_EMAIL_ALERT = "1"$/PS_EMAIL_ALERT = "0"/g' $CSFL
+	  sed -i 's/^CC_LOOKUPS = "1"$/CC_LOOKUPS = "0"/g' $CSFL
 	fi
 }
 
