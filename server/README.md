@@ -20,6 +20,6 @@ nginx websocket config, usually used with v2ray ws + tls
 
   
     
-haproxy.cfg
+haproxy.cfg  
 recommended haproxy cfg for tcp reply, only bind and server1 IP need to be changed
 
