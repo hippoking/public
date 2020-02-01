@@ -3,8 +3,10 @@ When installing nginx using nginx.org official repo, you'd better use nginx.conf
 
 
 
+
 csf_config.sh  
 after install csf on Centos or Debian, you can use "csf_config.sh" for fast csf config.  
+
 
 
 
