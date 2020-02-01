@@ -11,6 +11,11 @@ after install csf on Centos or Debian, you can use "csf_config.sh" for fast csf 
 
 
 v2_ws_tls.json  
-this is v2ray server websocket + tls config,just change uuid and port to fit your needs  
+this is v2ray server websocket + tls config, just change uuid and port to fit your needs  
+  
+  
+  
+nginx_ws.conf  
+nginx websocket config, usually used with v2ray ws + tls
 
 
