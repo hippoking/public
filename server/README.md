@@ -16,6 +16,10 @@ this is v2ray server websocket + tls config, just change uuid and port to fit yo
   
   
 nginx_ws.conf  
-nginx websocket config, usually used with v2ray ws + tls
+nginx websocket config, usually used with v2ray ws + tls  
 
+  
+    
+haproxy.cfg
+recommended haproxy cfg for tcp reply, only bind and server1 IP need to be changed
 
