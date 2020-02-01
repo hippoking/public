@@ -1,4 +1,3 @@
-// this is v2ray server websocket + tls config,just change uuid and port to fit your needs
 {
 	"log": {
 		"access": "/var/log/v2ray/access.log",
