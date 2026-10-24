@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Install GOST 3.3.0 by default, or a specific version: sudo bash gost.sh 3.3.1
+# Prompt for the GOST version, defaulting to 3.3.0: sudo bash gost.sh
 # Requires Linux x86_64 with an x86-64-v3 capable CPU and systemd.
 set -euo pipefail
 
@@ -9,9 +9,9 @@ die() {
     exit 1
 }
 
-# Allow zero or one argument
-if [[ $# -gt 1 ]]; then
-    die "Usage: $0 [version]"
+# Versions are selected interactively, not through arguments.
+if [[ $# -gt 0 ]]; then
+    die "Usage: $0"
 fi
 
 # Require root privileges
@@ -22,7 +22,9 @@ fi
 [[ $(uname -s) == Linux && $(uname -m) == x86_64 ]] || die 'Only Linux x86_64 is supported.'
 
 release_base='https://github.com/go-gost/gost/releases'
-version=${1:-3.3.0}
+read -r -p 'Which GOST version would you like to install? [3.3.0]: ' version \
+    || die 'Unable to read the GOST version from standard input.'
+version=${version:-3.3.0}
 version=${version#v}
 [[ $version =~ ^3\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]] || die "Invalid GOST v3 version: $version"
 
@@ -32,9 +34,9 @@ work_dir=$(mktemp -d)
 trap 'rm -rf -- "$work_dir"' EXIT
 
 printf 'Downloading GOST %s (linux_amd64v3)...\n' "$version"
-curl --fail --silent --show-error --location --retry 3 \
+curl --fail --show-error --location --retry 3 \
     "$download_url/$archive" --output "$work_dir/$archive"
-curl --fail --silent --show-error --location --retry 3 \
+curl --fail --show-error --location --retry 3 \
     "$download_url/checksums.txt" --output "$work_dir/checksums.txt"
 (
     cd "$work_dir"
